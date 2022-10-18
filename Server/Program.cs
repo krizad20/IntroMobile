@@ -12,7 +12,7 @@ namespace ToDo
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("http://localhost:5178").UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:5000").UseStartup<Startup>();
                 });
     }
 

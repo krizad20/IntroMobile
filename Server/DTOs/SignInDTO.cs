@@ -5,7 +5,7 @@ namespace ToDo.DTOs
     public partial class SignInDTO
     {
         [Required]
-        public string? UserId { get; set; }
+        public string? Id { get; set; }
         [Required]
         public string? Password { get; set; }
     }

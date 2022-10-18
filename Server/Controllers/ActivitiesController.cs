@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using ToDo.DTOs;
 using ToDo.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ToDo.Controllers;
 
@@ -17,7 +18,7 @@ public class ActivitiesController : ControllerBase
 {
 
     private readonly ILogger<ActivitiesController> _logger;
-    
+
 
     public ActivitiesController(ILogger<ActivitiesController> logger)
     {
@@ -54,6 +55,7 @@ public class ActivitiesController : ControllerBase
     }
 
     //Post add
+    [Authorize(Roles = "user")]
     [HttpPost("add")]
     public IActionResult Post([FromBody] ActivityDTO Dto)
     {
@@ -67,6 +69,7 @@ public class ActivitiesController : ControllerBase
     }
 
     //Put update
+    [Authorize(Roles = "user")]
     [HttpPut("{Id}")]
     public IActionResult Put(uint Id, [FromBody] ActivityDTO Dto)
     {
@@ -83,6 +86,7 @@ public class ActivitiesController : ControllerBase
     }
 
     //Delete
+    [Authorize(Roles = "user")]
     [HttpDelete("{Id}")]
     public IActionResult Delete(uint Id)
     {
@@ -98,27 +102,99 @@ public class ActivitiesController : ControllerBase
     }
 
     //SignIn Token
-    [HttpPost("")]
+    [HttpPost("login")]
     public IActionResult SignIn([FromBody] SignInDTO Dto)
     {
         var db = new ToDoDbContext();
-        var user = db.Users.Find(Dto.UserId);
+        var user = db.Users.Find(Dto.Id);
         if (user == null)
         {
-            return NotFound();
+            return StatusCode(200, new
+            {
+                message = "User not found",
+                status = 404
+            });
         }
 
         string password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: Dto.Password,
-            salt: Convert.FromBase64String(user.Salt),
+            salt: Convert.FromBase64String(user.Salt.Substring(0, 24)),
             prf: KeyDerivationPrf.HMACSHA1,
             iterationCount: 10000,
             numBytesRequested: 256 / 8));
 
         if (user.Password != password)
         {
-            return Unauthorized();
+            return StatusCode(200, new
+            {
+                message = "Wrong password",
+                status = 404
+            });
         }
+
+        var d = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, user.Id),
+                new Claim(ClaimTypes.Role, "user")
+            }),
+            NotBefore = DateTime.UtcNow,
+            Expires = DateTime.UtcNow.AddHours(3),
+            IssuedAt = DateTime.UtcNow,
+            Issuer = "todo",
+            Audience = "public",
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Program.SecurityKey)), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var h = new JwtSecurityTokenHandler();
+        var token = h.CreateToken(d);
+        string tokenString = h.WriteToken(token);
+
+
+        return StatusCode(200, new
+        {
+            token = tokenString,
+            status = 200
+        });
+    }
+
+    [HttpPost("signup")]
+    public IActionResult SignUp([FromBody] SignInDTO Dto)
+    {
+        var db = new ToDoDbContext();
+        var user = db.Users.Find(Dto.Id);
+        if (user != null)
+        {
+            return Ok("User already exists");
+        }
+
+
+        string salt = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: Dto.Password,
+            salt: Encoding.UTF8.GetBytes("todo"),
+            prf: KeyDerivationPrf.HMACSHA1,
+            iterationCount: 10000,
+            numBytesRequested: 256 / 8));
+
+        string password = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: Dto.Password,
+            salt: Convert.FromBase64String(salt.Substring(0, 24)),
+            prf: KeyDerivationPrf.HMACSHA1,
+            iterationCount: 10000,
+            numBytesRequested: 256 / 8));
+
+        user = new User
+        {
+            Id = Dto.Id,
+            Password = password,
+            //only 24 characters
+            Salt = salt.Substring(0, 24)
+        };
+
+        db.Users.Add(user);
+        db.SaveChanges();
 
         var d = new SecurityTokenDescriptor
         {
@@ -143,5 +219,4 @@ public class ActivitiesController : ControllerBase
 
         return StatusCode(201, new { token = tokenString });
     }
-
 }

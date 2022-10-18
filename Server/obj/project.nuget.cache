@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H5qIxW7a1hY3oTaIsN6OzSOmo6Kx0B5+VQl5moJsu54ttj8Qcfz/FEefkLRTdaTL2JNKu6/TPvZw1KLCroxe0w==",
+  "dgSpecHash": "S8Qepn+3bggbZ3Iae9p83g8AhRM682+tGKHaQgfpEBbxIM+MQnQmx+ChZmFbI5hiaxaCqcDkFMfN+r0Bi6ogcQ==",
   "success": true,
-  "projectFilePath": "D:\\Coding\\IntroMobile\\homework4\\ToDo\\ToDo.csproj",
+  "projectFilePath": "D:\\Coding\\IntroMobile\\IntroMobile\\Server\\ToDo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vim_i\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\vim_i\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.8\\microsoft.aspnetcore.authentication.jwtbearer.6.0.8.nupkg.sha512",

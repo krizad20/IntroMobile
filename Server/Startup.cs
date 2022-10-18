@@ -47,13 +47,13 @@ namespace ToDo
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            // app.UseCors(builder =>
-            // {
-            //     builder.AllowAnyOrigin();
-            //     builder.AllowAnyHeader();
-            //     builder.AllowAnyMethod();
-            // });
-            // app.UseAuthentication();
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

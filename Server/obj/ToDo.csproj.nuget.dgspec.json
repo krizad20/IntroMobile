@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Coding\\IntroMobile\\homework4\\ToDo\\ToDo.csproj": {}
+    "D:\\Coding\\IntroMobile\\IntroMobile\\Server\\ToDo.csproj": {}
   },
   "projects": {
-    "D:\\Coding\\IntroMobile\\homework4\\ToDo\\ToDo.csproj": {
+    "D:\\Coding\\IntroMobile\\IntroMobile\\Server\\ToDo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Coding\\IntroMobile\\homework4\\ToDo\\ToDo.csproj",
+        "projectUniqueName": "D:\\Coding\\IntroMobile\\IntroMobile\\Server\\ToDo.csproj",
         "projectName": "ToDo",
-        "projectPath": "D:\\Coding\\IntroMobile\\homework4\\ToDo\\ToDo.csproj",
+        "projectPath": "D:\\Coding\\IntroMobile\\IntroMobile\\Server\\ToDo.csproj",
         "packagesPath": "C:\\Users\\vim_i\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding\\IntroMobile\\homework4\\ToDo\\obj\\",
+        "outputPath": "D:\\Coding\\IntroMobile\\IntroMobile\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vim_i\\AppData\\Roaming\\NuGet\\NuGet.Config",
