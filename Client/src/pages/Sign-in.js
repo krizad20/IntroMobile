@@ -33,15 +33,18 @@ export default function SignIn() {
     const [id, setId] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
-
     const [cookies, setCookie, removeCookie] = useCookies(['token'])
+
+    //snackbar
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+    
     const [openError, setOpenError] = React.useState(false);
     const [openSuccess, setOpenSuccess] = React.useState(false);
     const vertical = 'top';
     const horizontal = 'right';
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
+    
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -54,11 +57,9 @@ export default function SignIn() {
         }
         setOpenSuccess(false);
     };
-
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
@@ -81,7 +82,7 @@ export default function SignIn() {
             password: password
         })
             .then(function (response) {
-                console.log(response);
+                //console.log(response);
                 if (response.data.status === 404) {
                     setOpenError(true);
                     //remove cookie
@@ -102,7 +103,7 @@ export default function SignIn() {
             })
             .catch(function (error) {
                 setOpenError(true);
-                console.log(error);
+                //console.log(error);
             });
 
 

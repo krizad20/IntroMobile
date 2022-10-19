@@ -29,25 +29,26 @@ const theme = createTheme();
 
 export default function SignUp() {
     let navigate = useNavigate()
-
+    const [cookies, setCookie, removeCookie] = useCookies(['token'])
 
     const [id, setId] = React.useState("");
+    //Show Hide Password
     const [password, setPassword] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
 
     const [confirmPassword, setConfirmPassword] = React.useState("");
     const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
-    const [cookies, setCookie, removeCookie] = useCookies(['token'])
-
+    //Snackbar
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
     const [openError, setOpenError] = React.useState(false);
     const [ErrorMessage, setErrorMessage] = React.useState("");
     const [openSuccess, setOpenSuccess] = React.useState(false);
     const vertical = 'top';
     const horizontal = 'right';
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
+    
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -60,17 +61,14 @@ export default function SignUp() {
         }
         setOpenSuccess(false);
     };
-
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-
     const handleMouseDown = (event) => {
         event.preventDefault();
     };
-
     const handleClickShowConfirmPassword = () => {
-        setShowPassword(!showPassword);
+        setShowConfirmPassword(!showConfirmPassword);
     };
 
 
@@ -106,7 +104,7 @@ export default function SignUp() {
 
             })
             .catch(function (error) {
-                console.log(error);
+                //console.log(error);
             });
 
 
@@ -201,7 +199,7 @@ export default function SignUp() {
                                     <OutlinedInput
                                         id="outlined-adornment-password"
                                         fullWidth
-                                        type={showPassword ? 'text' : 'password'}
+                                        type={showConfirmPassword ? 'text' : 'password'}
                                         value={password}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         endAdornment={
@@ -212,7 +210,7 @@ export default function SignUp() {
                                                     onMouseDown={handleMouseDown}
                                                     edge="end"
                                                 >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                                 </IconButton>
                                             </InputAdornment>
                                         }

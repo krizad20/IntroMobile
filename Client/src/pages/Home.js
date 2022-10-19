@@ -38,6 +38,9 @@ export default function SignIn() {
     //Datetime now
     const now = new Date();
 
+
+    //Material Table
+    const [data, setData] = useState([])
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
         Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -57,8 +60,6 @@ export default function SignIn() {
         ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
     }
-    const [data, setData] = useState([])
-
     const [columns, setColumns] = useState([
         {
             title: 'Id',
@@ -134,18 +135,20 @@ export default function SignIn() {
     //check login token
     const [cookies, setCookie] = useCookies(['token'])
 
+    //snackbar
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+
     const [openError, setOpenError] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [openSuccess, setOpenSuccess] = React.useState(false);
     const [successMessage, setSuccessMessage] = React.useState("");
     const [openWarning, setOpenWarning] = React.useState(false);
     const [warningMessage, setWarningMessage] = React.useState("");
-
     const vertical = 'top';
     const horizontal = 'right';
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
+
     const handleCloseError = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -166,8 +169,8 @@ export default function SignIn() {
     };
 
     let navigate = useNavigate()
-    //Check if user is logged in
     useEffect(() => {
+
         if (!cookies.token) {
             navigate("/")
         }
@@ -179,10 +182,10 @@ export default function SignIn() {
         })
             .then(res => {
                 setData(res.data)
-                console.log(res.data)
+                // console.log(res.data)
             })
             .catch(err => {
-                console.log(err)
+                // console.log(err)
             })
 
 
@@ -228,7 +231,7 @@ export default function SignIn() {
     const updateData = (newData, oldData) => {
 
         return new Promise((resolve, reject) => {
-            console.log(newData)
+            // console.log(newData)
             if (newData.name === '' || newData.name === undefined || newData.when === undefined || newData.when === '' || newData.when === null) {
                 setWarningMessage("กรุณากรอกข้อมูลให้ครบ")
                 setOpenWarning(true)
@@ -284,7 +287,7 @@ export default function SignIn() {
                 .catch(err => {
                     setErrorMessage("ไม่สามารถลบข้อมูลได้")
                     setOpenError(true)
-                    console.log(err)
+                    // console.log(err)
                     reject()
                 })
 
@@ -354,15 +357,17 @@ export default function SignIn() {
                         data={data}
                         localization={{ body: { editRow: { deleteText: 'ยืนยันการลบข้อมูล' } } }}
                         editable={{
-                            onRowAddCancelled: rowData => console.log('Row adding cancelled'),
-                            onRowUpdateCancelled: rowData => console.log('Row editing cancelled'),
+                            onRowAddCancelled: rowData => {
+                                //console.log('Row adding cancelled') 
+                            },
+                            onRowUpdateCancelled: rowData => {
+                                //console.log('Row editing cancelled')
+                            },
                             onRowAdd: newData =>
-                                //get not edit cell
                                 addData(newData),
                             onRowUpdate: (newData, oldData) =>
                                 updateData(newData, oldData),
                             onRowDelete: oldData =>
-                                //delete text
                                 deleteData(oldData)
                         }}
                         width="60%"
@@ -379,7 +384,6 @@ export default function SignIn() {
                             },
                             rowStyle: {
                                 backgroundColor: '#EEE',
-
                             },
                             //Hide title
                             search: true,
