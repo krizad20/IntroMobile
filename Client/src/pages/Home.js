@@ -346,7 +346,7 @@ export default function SignIn() {
                     {/* head */}
                     <div className="head">
                         <center className="head__title">
-                            <h1>Activities</h1>
+                            <h1>Todo</h1>
                         </center>
                     </div>
                     {/* width */}
