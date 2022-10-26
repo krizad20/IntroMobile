@@ -35,9 +35,6 @@ const theme = createTheme();
 
 export default function SignIn() {
 
-    //Datetime now
-    const now = new Date();
-
 
     //Material Table
     const [data, setData] = useState([])
@@ -83,12 +80,14 @@ export default function SignIn() {
             },
             editComponent: props => (
                 <TextField
+                    label="Name"
                     value={props.value}
                     onChange={e => props.onChange(e.target.value)}
                     error={props.error}
                     helperText={props.helperText}
                 />),
-            // validate: rowData => rowData.name === undefined || rowData.name === "" ? "Required" : true
+
+            validate: rowData => rowData.name === undefined || rowData.name === "" ? "" : true
         },
         {
             title: 'When',
@@ -103,20 +102,21 @@ export default function SignIn() {
             locale: 'th-TH',
             //DD Month YYYY
             render: rowData => rowData.when === undefined ? "" :
-                new Date(rowData.when).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }),
+                //date time
+                new Date(rowData.when).toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }),
+            // new Date(rowData.when).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }),
 
             /*  */
             editComponent: props => (
 
-                <LocalizationProvider dateAdapter={AdapterDateFns}
-                >
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
                     {/* Th date picker */}
                     <DateTimePicker
                         label="When"
                         locale="th-TH"
                         inputFormat="dd/MM/yyyy HH:mm"
                         pickerHeaderFormat="dd/MMMM/yyyy HH:mm"
-                        value={props.value === undefined ? now : props.value}
+                        value={props.value === undefined ? "" : props.value}
                         onChange={(newValue) => {
                             props.onChange(newValue);
                         }
@@ -126,7 +126,9 @@ export default function SignIn() {
                             />}
                     />
                 </LocalizationProvider>
-            )
+            ),
+
+            //addComponent
 
         },
 
@@ -196,8 +198,9 @@ export default function SignIn() {
 
     //add data to database
     const addData = (newData) => {
-
+        console.log(newData)
         return new Promise((resolve, reject) => {
+
             if (newData.name === '' || newData.name === undefined || newData.when === undefined || newData.when === '' || newData.when === null) {
                 setWarningMessage("กรุณากรอกข้อมูลให้ครบ")
                 setOpenWarning(true)
