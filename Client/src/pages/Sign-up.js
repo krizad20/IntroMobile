@@ -195,12 +195,12 @@ export default function SignUp() {
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControl required fullWidth variant="outlined">
-                                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                    <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-password"
                                         fullWidth
                                         type={showConfirmPassword ? 'text' : 'password'}
-                                        value={password}
+                                        value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         endAdornment={
                                             <InputAdornment position="end">
