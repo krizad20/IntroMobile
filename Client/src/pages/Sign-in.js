@@ -41,6 +41,7 @@ export default function SignIn() {
     });
     
     const [openError, setOpenError] = React.useState(false);
+    const [openErrorMessage, setOpenErrorMessage] = React.useState("");
     const [openSuccess, setOpenSuccess] = React.useState(false);
     const vertical = 'top';
     const horizontal = 'right';
@@ -85,6 +86,7 @@ export default function SignIn() {
                 //console.log(response);
                 if (response.data.status === 404) {
                     setOpenError(true);
+                    setOpenErrorMessage("ชื่อผู้ใช้หรอรหัสผ่านไม่ถูกต้อง");
                     //remove cookie
                     removeCookie('token', { path: '/' })
                 }
@@ -103,6 +105,7 @@ export default function SignIn() {
             })
             .catch(function (error) {
                 setOpenError(true);
+                setOpenErrorMessage(error.message);
                 //console.log(error);
             });
 
@@ -123,7 +126,7 @@ export default function SignIn() {
                         onClose={handleCloseError}
                         severity="error"
                         sx={{ width: '100%' }}>
-                        ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</Alert>
+                        {openErrorMessage}</Alert>
                 </Snackbar>
 
                 <Snackbar
@@ -134,7 +137,7 @@ export default function SignIn() {
                 >
                     <Alert
                         onClose={handleCloseSuccess}
-                        severity="success"
+                        severity="info"
                         sx={{ width: '100%' }}>
                         ลงชื่อเข้าใช้สำเร็จ</Alert>
                 </Snackbar>

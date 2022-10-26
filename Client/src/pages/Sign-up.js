@@ -136,7 +136,7 @@ export default function SignUp() {
                 >
                     <Alert
                         onClose={handleCloseSuccess}
-                        severity="success"
+                        severity="info"
                         sx={{ width: '100%' }}>
                         สมัครเข้าใช้งานสำเร็จ</Alert>
                 </Snackbar>
@@ -195,9 +195,9 @@ export default function SignUp() {
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControl required fullWidth variant="outlined">
-                                    <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+                                    <InputLabel htmlFor="outlined-adornment-confirm-password">Confirm Password</InputLabel>
                                     <OutlinedInput
-                                        id="outlined-adornment-password"
+                                        id="outlined-adornment-confirm-password"
                                         fullWidth
                                         type={showConfirmPassword ? 'text' : 'password'}
                                         value={confirmPassword}
